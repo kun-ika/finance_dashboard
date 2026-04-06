@@ -1,5 +1,9 @@
 import React, { useEffect, useRef } from 'react';
+import { Chart, BarController, BarElement, CategoryScale, LinearScale, Tooltip, Legend } from 'chart.js';
 import { CHART_DEFAULTS } from '../../utils/formatters';
+
+// Register Chart.js components
+Chart.register(BarController, BarElement, CategoryScale, LinearScale, Tooltip, Legend);
 
 /**
  * Bar chart for comparing monthly income and expenses.
@@ -13,7 +17,7 @@ export function BarChart({ data, theme, active }) {
   const chartRef = useRef(null);
 
   useEffect(() => {
-    if (!window.Chart || !canvasRef.current || !active) return;
+    if (!canvasRef.current || !active) return;
     const months = Object.keys(data).sort().slice(-6);
     const labels = months.map((m) => {
       const [y, mo] = m.split('-');
@@ -22,7 +26,7 @@ export function BarChart({ data, theme, active }) {
 
     if (chartRef.current) chartRef.current.destroy();
 
-    chartRef.current = new window.Chart(canvasRef.current.getContext('2d'), {
+    chartRef.current = new Chart(canvasRef.current.getContext('2d'), {
       type: 'bar',
       data: {
         labels,

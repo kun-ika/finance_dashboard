@@ -1,4 +1,8 @@
 import React, { useEffect, useRef } from 'react';
+import { Chart, DoughnutController, ArcElement, Tooltip, Legend } from 'chart.js';
+
+// Register Chart.js components
+Chart.register(DoughnutController, ArcElement, Tooltip, Legend);
 
 /**
  * Donut chart for spending breakdown by category.
@@ -11,14 +15,14 @@ export function DonutChart({ data, theme }) {
   const chartRef = useRef(null);
 
   useEffect(() => {
-    if (!window.Chart || !canvasRef.current) return;
+    if (!canvasRef.current) return;
     const labels = Object.keys(data);
     const vals = Object.values(data);
     const COLORS = ['#c8f135', '#5b8fff', '#ff6b6b', '#ffb347', '#b482ff', '#ff91c8', '#50c8c8', '#64dc96', '#f0f135', '#aaa'];
 
     if (chartRef.current) chartRef.current.destroy();
 
-    chartRef.current = new window.Chart(canvasRef.current.getContext('2d'), {
+    chartRef.current = new Chart(canvasRef.current.getContext('2d'), {
       type: 'doughnut',
       data: {
         labels,
